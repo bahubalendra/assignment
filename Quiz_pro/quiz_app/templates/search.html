@@ -1,0 +1,25 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+
+
+{% block main_body %}
+<form method='GET'>
+	<div class="input-group input-group-lg">
+	  <div class="input-group-prepend" style="background-color: #080d2b; border-right: 0;">
+	    <span class="input-group-text" id="inputGroup-sizing-lg" style="background-color: #080d2b; border-right: 0; color: #fff;">Search</span>
+	  </div>
+	  <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg" placeholder="Search ..." name="q">
+	  <div class="input-group-append">
+	    <button class="btn mainbtn " type="submit" id="button-addon2"><i class="fa fa-search" aria-hidden="true"></i></button>
+	  </div>
+	</div>
+</form>
+<div class="row" style="justify-content: center;">
+
+  
+  
+</div>
+{% endfor %}
+</div>
+{% endblock main_body %}

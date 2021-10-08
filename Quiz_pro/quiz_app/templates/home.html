@@ -1,0 +1,85 @@
+{% extends 'navbar.html' %}
+{% load static %}
+{% block main_body %}
+<div class="row">
+  <div class="col-md-6">
+    <div class="well well-sm well-social-post">
+      <form method="post" enctype="multipart/form-data">
+         {% csrf_token %}
+        <ul class="list-inline" id=''>
+          <li class="list-inline-item"> <input type="file" accept="image/*"
+              name="post_image" id="add_post_image" style="visibility: hidden;"></li>
+        </ul>
+        <textarea class="form-control" placeholder="What's in your mind?"
+          name="text" required></textarea>
+        <ul class='list-inline post-actions display-inline'>
+          <li class="list-inline-item"><a
+              onclick="$('#add_post_image').click()"><span class="fa fa-camera"></span></a></li>
+          <li class='pull-right list-inline-item'>
+            <button type="submit" class='btn-sm mainbtn pb-0 pt-0'>Submit</button>
+          </li>
+        </ul>
+      </form>
+    </div>
+    <hr>
+      <div class="card-footer d-flex justify-content-center">
+        <a class="card-link m-auto click" data-toggle="collapse"
+          data-target="#post{{post.id}}comments" aria-expanded="false"
+          aria-controls="post{{post.id}}comments"><i class="fa fa-comment"></i>
+          Comment</a>
+      </div>
+      <div class="collapse" id="post{{post.id}}comments">
+        <div class="card" style="border:none">
+          <div class="card-body" id="comments_of_post{{post.id}}" style="max-height: 300px; overflow-y: scroll;
+            background-color: #f7f7f7;">
+            {% for comment in post.id|comments %}
+            <div class="media">
+              <img src="{{comment.0.user.profile.profile_pic.url}}" width="40" height="40" alt="..." class="img-thumbnail rounded mr-3">
+              <div class="media-body">
+                <b>{{comment.0.user.get_full_name}}</b>
+                <p style="font-size: 13px;">{{comment.0.comm}}</p>
+                <div id="comment{{comment.0.id}}">
+                  <button class="btn-sm mainbtn"  
+                  onclick="CommentReplyForm('comment{{comment.0.id}}',
+                   '{{comment.0.id}}', 
+                   '{{request.user.profile.profile_pic.url}}')">Reply</button>
+                </div>
+                <div id="comment{{comment.0.id}}replys">
+                {% for subcomment in comment.1 %}
+                <div class="media mt-3">
+                  <a class="mr-3" href="#">
+                    <img src="{{subcomment.user.profile.profile_pic.url}}" width="40" height="40" alt="..." class="img-thumbnail rounded">
+                  </a>
+                  <div class="media-body">
+                    <b>{{subcomment.user.get_full_name}}</b>
+                    <p style="font-size: 13px;">{{subcomment.comm}}</p>
+                  </div>
+                </div>
+                {% endfor %}
+              </div>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+          <form class="card-footer p-0 m-0 input-group" style="border:none;">
+            <div class="input-group-prepend rounded-0">
+              <span class="input-group-text" style="border-radius:0">
+              </span>
+            </div>
+            <input type="text" class="form-control" aria-label="Write a Comment"
+              placeholder="Write a Comment" id="comment_text_of_{{post.id}}">
+            <div class="input-group-append">
+              <button class="input-group-text btn" type="button" 
+              onclick="addComment('{{post.id}}',
+               'comment_text_of_{{post.id}}', 'comments_of_post{{post.id}}')"><i class="fa fa-paper-plane"
+                  aria-hidden="true"></i></button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+
+{% endblock main_body %}
